@@ -9,8 +9,8 @@ import useDebounce from "../hooks/useDebounce";
 export default function Home() {
   const { logout } = useAuth();
 
-  const [allCharacters, setAllCharacters] = useState([]);   // Full list
-  const [characters, setCharacters] = useState([]);         // Filtered + shown
+  const [allCharacters, setAllCharacters] = useState([]);    
+  const [characters, setCharacters] = useState([]);          
 
   const [species, setSpecies] = useState([]);
   const [planets, setPlanets] = useState([]);
@@ -33,7 +33,7 @@ export default function Home() {
 
   const [selected, setSelected] = useState(null);
 
-  // 🎯 Fetch ALL characters once
+ 
   useEffect(() => {
     async function loadAll() {
       try {
@@ -50,7 +50,7 @@ export default function Home() {
     loadAll();
   }, []);
 
-  // 🎯 Apply search + filters
+  
   useEffect(() => {
     let filtered = [...allCharacters];
 
@@ -68,25 +68,25 @@ export default function Home() {
     );
   }
 
-  // Homeworld (URL match)
+  // Homeworld  
   if (filters.homeworld) {
     filtered = filtered.filter((c) => c.homeworld === filters.homeworld);
   }
 
-  // Film (URL match)
+  // Film  
   if (filters.film) {
     filtered = filtered.filter((c) => c.films.includes(filters.film));
   }
 
     setCharacters(filtered);
-    setPage(1); // Reset page after filters
+    setPage(1);  
   }, [debouncedSearch, filters, allCharacters]);
 
-  // 🎯 Pagination logic
+  //  Pagination logic
   const start = (page - 1) * perPage;
   const paginated = characters.slice(start, start + perPage);
 
-  // 🎯 Load filter dropdown data
+  // Load filter dropdown data
   useEffect(() => {
     async function fetchFilters() {
       try {
@@ -108,7 +108,7 @@ export default function Home() {
     fetchFilters();
   }, []);
 
-  // 🎯 Fetch all pages of characters
+  
   async function fetchAllCharacters() {
     let results = [];
     let next = "https://swapi.dev/api/people/";
@@ -125,7 +125,7 @@ export default function Home() {
 
   return (
     <div className="p-6">
-      {/* Logout */}
+     
       <button
         onClick={logout}
         className="bg-red-600 text-white px-6 py-2 rounded-xl mb-4"
@@ -133,10 +133,9 @@ export default function Home() {
         Logout
       </button>
 
-      {/* Search */}
+      
       <SearchBar search={search} setSearch={setSearch} />
-
-      {/* Filters */}
+ 
       <Filters
         species={species}
         planets={planets}
@@ -144,7 +143,7 @@ export default function Home() {
         setFilters={setFilters}
       />
 
-      {/* Loading */}
+      
       {loading && <p className="mt-10 text-center">Loading...</p>}
       {error && <p className="mt-10 text-center text-red-600">{error}</p>}
 
@@ -155,7 +154,7 @@ export default function Home() {
         </p>
       )}
 
-      {/* Characters Grid */}
+      
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
         {paginated.map((c) => (
           <CharacterCard
@@ -166,7 +165,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Pagination */}
+   
       {paginated.length > 0 && (
         <div className="flex justify-between mt-6">
           <button
@@ -187,7 +186,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* Modal */}
+  
       {selected && (
         <CharacterModal
           character={selected}
